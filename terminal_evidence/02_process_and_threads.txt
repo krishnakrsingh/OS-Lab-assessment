@@ -1,87 +1,15 @@
-=== TERMINAL EVIDENCE: Module 2: Process Hierarchy, Threads & Concurrency ===
-Timestamp: 2026-09-17 07:56:06
-Command  : /usr/bin/python3 -c import src.module2_proc_threads.fork_lifecycle as f, src.module2_proc_threads.thread_concurrency as t, src.module2_proc_threads.proc_vs_thread_bench as b; f.main(); t.main(); b.main()
-Exit Code: 0 (Completed in 2.17s)
+--- 1. Process Hierarchy (fork & waitpid) ---
+Harvested child 567, exit code: 0
+Harvested child 568, exit code: 10
+Harvested child 569, exit code: 20
 
-############################################################
-  LINUX PROCESS CREATION & WAITPID LIFECYCLE
-############################################################
+--- 2. Threads: Race Condition vs Lock ---
+Without Lock -> Expected: 2500, Got: 502 (Race condition: True)
+With Lock    -> Expected: 2500, Got: 2500 (Protected: True)
 
-============================================================
-Process Hierarchy & Lifecycle (fork & waitpid)
-============================================================
-[*] Parent controller PID: 591
-[*] Parent spawned Child PID 592 for Task #1
-[*] Parent spawned Child PID 593 for Task #2
-[*] Parent spawned Child PID 594 for Task #3
-[*] Parent waiting for 3 children to terminate...
-
-[*] Reaped Child PID 594 (Task #3) -> Normal exit, status=0
-[*] Reaped Child PID 592 (Task #1) -> Normal exit, status=10
-[*] Reaped Child PID 593 (Task #2) -> Normal exit, status=20
-
-[+] All child processes harvested. Process table clean.
-############################################################
-  THREAD CONCURRENCY, RACE CONDITIONS & SYNCHRONIZATION
-############################################################
-
-============================================================
-1. Critical Section Race Condition Demonstration
-============================================================
-[*] Spawning 5 threads to perform 200 increments each without lock...
-[*] Expected Counter Value: 1000
-[*] Actual Counter Value  : 203
-[!] RACE CONDITION OCCURRED! Lost 797 updates due to unsynchronized interleaving.
-
-============================================================
-2. Mutual Exclusion Synchronization (threading.Lock)
-============================================================
-[*] Spawning 5 threads to perform 200 increments each with Lock...
-[*] Expected Counter Value: 1000
-[*] Actual Counter Value  : 1000
-[+] MUTEX SUCCESS: Lock guaranteed atomicity. Zero lost updates.
-
-============================================================
-3. Bounded Concurrency using threading.Semaphore
-============================================================
-  [Thread 0] Requesting access to shared resource pool...
-  --> [Thread 0] Entered pool (Active users: 1/2)
-  [Thread 1] Requesting access to shared resource pool...
-  --> [Thread 1] Entered pool (Active users: 2/2)
-  [Thread 2] Requesting access to shared resource pool...
-  [Thread 3] Requesting access to shared resource pool...
-  [Thread 4] Requesting access to shared resource pool...
-  <-- [Thread 0] Leaving pool.
-  <-- [Thread 1] Leaving pool.
-  --> [Thread 3] Entered pool (Active users: 1/2)
-  --> [Thread 2] Entered pool (Active users: 2/2)
-  <-- [Thread 3] Leaving pool.
-  --> [Thread 4] Entered pool (Active users: 2/2)
-  <-- [Thread 2] Leaving pool.
-  <-- [Thread 4] Leaving pool.
-
-[+] Semaphore properly restricted concurrent entries.
-############################################################
-  PROCESS VS THREAD ARCHITECTURAL BENCHMARK
-############################################################
-
-============================================================
-1. Memory Isolation Comparison (Address Space)
-============================================================
-[*] Parent Process before child: sample_data = [1, 2, 3]
-  [Child Process PID 612] Modified sample_data: [1, 2, 3, 999]
-[*] Parent Process after child : sample_data = [1, 2, 3]
-  -> CONFIRMED: Process memory is isolated (Copy-on-Write). Child mutation was local.
-
-[*] Main Thread before worker : sample_data = [1, 2, 3]
-  [Worker Thread] Modified sample_data: [1, 2, 3, 888]
-[*] Main Thread after worker  : sample_data = [1, 2, 3, 888]
-  -> CONFIRMED: Thread memory is shared across the entire process space.
-
-============================================================
-2. Creation & Join Overhead Benchmark (25 units)
-============================================================
-[*] 25 Threads creation + join time  : 10.58 ms (0.423 ms/thread)
-[*] 25 Processes creation + join time: 237.64 ms (9.506 ms/process)
-[+] Threads were ~22.5x faster to spawn due to avoiding full address-space duplication.
+--- 3. Memory: Process Isolation vs Thread Sharing ---
+  Inside child process: [1, 2, 3, 99]
+Parent process after child: [1, 2, 3] (Isolated: True)
+  Inside worker thread: [1, 2, 3, 99]
+Main thread after worker  : [1, 2, 3, 99] (Shared: True)
 

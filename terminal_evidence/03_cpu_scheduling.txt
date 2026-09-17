@@ -1,195 +1,156 @@
-=== TERMINAL EVIDENCE: Module 3: CPU Scheduling Simulation (FCFS, SJF, SRTF, RR, Priority) ===
-Timestamp: 2026-09-17 07:56:06
-Command  : /usr/bin/python3 -m src.module3_cpu_scheduling.scheduler_runner
-Exit Code: 0 (Completed in 0.30s)
 
-===========================================================================
-  CPU SCHEDULING ALGORITHMS SIMULATION & COMPARATIVE ANALYSIS
-===========================================================================
+==================== FCFS ====================
+Execution Order: P1 -> P2 -> P3 -> P4 -> P5
+Idle Intervals : None
 
->> Algorithm: First-Come, First-Served (FCFS)
----------------------------------------------------------------------------
-[*] Execution Order : P1 -> P2 -> P3 -> P4 -> P5
-[*] Idle Intervals  : None (CPU 100% engaged after arrival)
-
-[*] Gantt Chart:
+Gantt Chart:
 +------+------+------+------+------+
 |  P1  |  P2  |  P3  |  P4  |  P5  |
 +------+------+------+------+------+
-0     5      8     16     22     26
+0      5      8     16     22     26
 
-+-----+--------------+------------+----------+-----------+-------------+-------------+---------------+
-| PID | Arrival (AT) | Burst (BT) | Priority | Exit (CT) | TAT (CT-AT) | WT (TAT-BT) | RT (Start-AT) |
-+-----+--------------+------------+----------+-----------+-------------+-------------+---------------+
-|  P1 |      0       |     5      |    3     |     5     |      5      |      0      |       0       |
-|  P2 |      1       |     3      |    1     |     8     |      7      |      4      |       4       |
-|  P3 |      2       |     8      |    4     |     16    |      14     |      6      |       6       |
-|  P4 |      3       |     6      |    2     |     22    |      19     |      13     |       13      |
-|  P5 |      15      |     4      |    2     |     26    |      11     |      7      |       7       |
-+-----+--------------+------------+----------+-----------+-------------+-------------+---------------+
+PID | AT | BT | Priority | CT | TAT | WT | RT
+------------------------------------------------
+ P1 |  0 |  5 |        3 |  5 |   5 |  0 |  0
+ P2 |  1 |  3 |        1 |  8 |   7 |  4 |  4
+ P3 |  2 |  8 |        4 | 16 |  14 |  6 |  6
+ P4 |  3 |  6 |        2 | 22 |  19 | 13 | 13
+ P5 | 15 |  4 |        2 | 26 |  11 |  7 |  7
 
-Average Turnaround Time (TAT) : 11.20 time units
-Average Waiting Time    (WT)  : 6.00 time units
-Average Response Time   (RT)  : 6.00 time units
-CPU Utilization               : 100.00 %
-Throughput                    : 0.1923 processes/unit time
----------------------------------------------------------------------------
+Average TAT : 11.20
+Average WT  : 6.00
+Average RT  : 6.00
+CPU Util    : 100.0%
+Throughput  : 0.192 procs/unit
 
->> Algorithm: Shortest Job First (SJF - Non-Preemptive)
----------------------------------------------------------------------------
-[*] Execution Order : P1 -> P2 -> P4 -> P3 -> P5
-[*] Idle Intervals  : None (CPU 100% engaged after arrival)
+==================== SJF (Non-Preemptive) ====================
+Execution Order: P1 -> P2 -> P4 -> P3 -> P5
+Idle Intervals : None
 
-[*] Gantt Chart:
+Gantt Chart:
 +------+------+------+------+------+
 |  P1  |  P2  |  P4  |  P3  |  P5  |
 +------+------+------+------+------+
-0     5      8     14     22     26
+0      5      8     14     22     26
 
-+-----+--------------+------------+----------+-----------+-------------+-------------+---------------+
-| PID | Arrival (AT) | Burst (BT) | Priority | Exit (CT) | TAT (CT-AT) | WT (TAT-BT) | RT (Start-AT) |
-+-----+--------------+------------+----------+-----------+-------------+-------------+---------------+
-|  P1 |      0       |     5      |    3     |     5     |      5      |      0      |       0       |
-|  P2 |      1       |     3      |    1     |     8     |      7      |      4      |       4       |
-|  P3 |      2       |     8      |    4     |     22    |      20     |      12     |       12      |
-|  P4 |      3       |     6      |    2     |     14    |      11     |      5      |       5       |
-|  P5 |      15      |     4      |    2     |     26    |      11     |      7      |       7       |
-+-----+--------------+------------+----------+-----------+-------------+-------------+---------------+
+PID | AT | BT | Priority | CT | TAT | WT | RT
+------------------------------------------------
+ P1 |  0 |  5 |        3 |  5 |   5 |  0 |  0
+ P2 |  1 |  3 |        1 |  8 |   7 |  4 |  4
+ P3 |  2 |  8 |        4 | 22 |  20 | 12 | 12
+ P4 |  3 |  6 |        2 | 14 |  11 |  5 |  5
+ P5 | 15 |  4 |        2 | 26 |  11 |  7 |  7
 
-Average Turnaround Time (TAT) : 10.80 time units
-Average Waiting Time    (WT)  : 5.60 time units
-Average Response Time   (RT)  : 5.60 time units
-CPU Utilization               : 100.00 %
-Throughput                    : 0.1923 processes/unit time
----------------------------------------------------------------------------
+Average TAT : 10.80
+Average WT  : 5.60
+Average RT  : 5.60
+CPU Util    : 100.0%
+Throughput  : 0.192 procs/unit
 
->> Algorithm: Shortest Remaining Time First (SRTF - Preemptive)
----------------------------------------------------------------------------
-[*] Execution Order : P1 -> P2 -> P1 -> P4 -> P3 -> P5 -> P3
-[*] Idle Intervals  : None (CPU 100% engaged after arrival)
+==================== SRTF (Preemptive SJF) ====================
+Execution Order: P1 -> P2 -> P1 -> P4 -> P3 -> P5 -> P3
+Idle Intervals : None
 
-[*] Gantt Chart:
+Gantt Chart:
 +------+------+------+------+------+------+------+
 |  P1  |  P2  |  P1  |  P4  |  P3  |  P5  |  P3  |
 +------+------+------+------+------+------+------+
-0     1      4      8     14     15     19     26
+0      1      4      8     14     15     19     26
 
-+-----+--------------+------------+----------+-----------+-------------+-------------+---------------+
-| PID | Arrival (AT) | Burst (BT) | Priority | Exit (CT) | TAT (CT-AT) | WT (TAT-BT) | RT (Start-AT) |
-+-----+--------------+------------+----------+-----------+-------------+-------------+---------------+
-|  P1 |      0       |     5      |    3     |     8     |      8      |      3      |       0       |
-|  P2 |      1       |     3      |    1     |     4     |      3      |      0      |       0       |
-|  P3 |      2       |     8      |    4     |     26    |      24     |      16     |       12      |
-|  P4 |      3       |     6      |    2     |     14    |      11     |      5      |       5       |
-|  P5 |      15      |     4      |    2     |     19    |      4      |      0      |       0       |
-+-----+--------------+------------+----------+-----------+-------------+-------------+---------------+
+PID | AT | BT | Priority | CT | TAT | WT | RT
+------------------------------------------------
+ P1 |  0 |  5 |        3 |  8 |   8 |  3 |  0
+ P2 |  1 |  3 |        1 |  4 |   3 |  0 |  0
+ P3 |  2 |  8 |        4 | 26 |  24 | 16 | 12
+ P4 |  3 |  6 |        2 | 14 |  11 |  5 |  5
+ P5 | 15 |  4 |        2 | 19 |   4 |  0 |  0
 
-Average Turnaround Time (TAT) : 10.00 time units
-Average Waiting Time    (WT)  : 4.80 time units
-Average Response Time   (RT)  : 3.40 time units
-CPU Utilization               : 100.00 %
-Throughput                    : 0.1923 processes/unit time
----------------------------------------------------------------------------
+Average TAT : 10.00
+Average WT  : 4.80
+Average RT  : 3.40
+CPU Util    : 100.0%
+Throughput  : 0.192 procs/unit
 
->> Algorithm: Round Robin (RR, Quantum=2)
----------------------------------------------------------------------------
-[*] Execution Order : P1 -> P2 -> P3 -> P1 -> P4 -> P2 -> P3 -> P1 -> P4 -> P3 -> P5 -> P4 -> P3 -> P5
-[*] Idle Intervals  : None (CPU 100% engaged after arrival)
+==================== Round Robin (q=2) ====================
+Execution Order: P1 -> P2 -> P3 -> P1 -> P4 -> P2 -> P3 -> P1 -> P4 -> P3 -> P5 -> P4 -> P3 -> P5
+Idle Intervals : None
 
-[*] Gantt Chart:
+Gantt Chart:
 +------+------+------+------+------+------+------+------+------+------+------+------+------+------+
 |  P1  |  P2  |  P3  |  P1  |  P4  |  P2  |  P3  |  P1  |  P4  |  P3  |  P5  |  P4  |  P3  |  P5  |
 +------+------+------+------+------+------+------+------+------+------+------+------+------+------+
-0     2      4      6      8     10     11     13     14     16     18     20     22     24     26
+0      2      4      6      8     10     11     13     14     16     18     20     22     24     26
 
-+-----+--------------+------------+----------+-----------+-------------+-------------+---------------+
-| PID | Arrival (AT) | Burst (BT) | Priority | Exit (CT) | TAT (CT-AT) | WT (TAT-BT) | RT (Start-AT) |
-+-----+--------------+------------+----------+-----------+-------------+-------------+---------------+
-|  P1 |      0       |     5      |    3     |     14    |      14     |      9      |       0       |
-|  P2 |      1       |     3      |    1     |     11    |      10     |      7      |       1       |
-|  P3 |      2       |     8      |    4     |     24    |      22     |      14     |       2       |
-|  P4 |      3       |     6      |    2     |     22    |      19     |      13     |       5       |
-|  P5 |      15      |     4      |    2     |     26    |      11     |      7      |       3       |
-+-----+--------------+------------+----------+-----------+-------------+-------------+---------------+
+PID | AT | BT | Priority | CT | TAT | WT | RT
+------------------------------------------------
+ P1 |  0 |  5 |        3 | 14 |  14 |  9 |  0
+ P2 |  1 |  3 |        1 | 11 |  10 |  7 |  1
+ P3 |  2 |  8 |        4 | 24 |  22 | 14 |  2
+ P4 |  3 |  6 |        2 | 22 |  19 | 13 |  5
+ P5 | 15 |  4 |        2 | 26 |  11 |  7 |  3
 
-Average Turnaround Time (TAT) : 15.20 time units
-Average Waiting Time    (WT)  : 10.00 time units
-Average Response Time   (RT)  : 2.20 time units
-CPU Utilization               : 100.00 %
-Throughput                    : 0.1923 processes/unit time
----------------------------------------------------------------------------
+Average TAT : 15.20
+Average WT  : 10.00
+Average RT  : 2.20
+CPU Util    : 100.0%
+Throughput  : 0.192 procs/unit
 
->> Algorithm: Priority (Non-Preemptive)
----------------------------------------------------------------------------
-[*] Execution Order : P1 -> P2 -> P4 -> P3 -> P5
-[*] Idle Intervals  : None (CPU 100% engaged after arrival)
+==================== Priority (Non-Preemptive) ====================
+Execution Order: P1 -> P2 -> P4 -> P3 -> P5
+Idle Intervals : None
 
-[*] Gantt Chart:
+Gantt Chart:
 +------+------+------+------+------+
 |  P1  |  P2  |  P4  |  P3  |  P5  |
 +------+------+------+------+------+
-0     5      8     14     22     26
+0      5      8     14     22     26
 
-+-----+--------------+------------+----------+-----------+-------------+-------------+---------------+
-| PID | Arrival (AT) | Burst (BT) | Priority | Exit (CT) | TAT (CT-AT) | WT (TAT-BT) | RT (Start-AT) |
-+-----+--------------+------------+----------+-----------+-------------+-------------+---------------+
-|  P1 |      0       |     5      |    3     |     5     |      5      |      0      |       0       |
-|  P2 |      1       |     3      |    1     |     8     |      7      |      4      |       4       |
-|  P3 |      2       |     8      |    4     |     22    |      20     |      12     |       12      |
-|  P4 |      3       |     6      |    2     |     14    |      11     |      5      |       5       |
-|  P5 |      15      |     4      |    2     |     26    |      11     |      7      |       7       |
-+-----+--------------+------------+----------+-----------+-------------+-------------+---------------+
+PID | AT | BT | Priority | CT | TAT | WT | RT
+------------------------------------------------
+ P1 |  0 |  5 |        3 |  5 |   5 |  0 |  0
+ P2 |  1 |  3 |        1 |  8 |   7 |  4 |  4
+ P3 |  2 |  8 |        4 | 22 |  20 | 12 | 12
+ P4 |  3 |  6 |        2 | 14 |  11 |  5 |  5
+ P5 | 15 |  4 |        2 | 26 |  11 |  7 |  7
 
-Average Turnaround Time (TAT) : 10.80 time units
-Average Waiting Time    (WT)  : 5.60 time units
-Average Response Time   (RT)  : 5.60 time units
-CPU Utilization               : 100.00 %
-Throughput                    : 0.1923 processes/unit time
----------------------------------------------------------------------------
+Average TAT : 10.80
+Average WT  : 5.60
+Average RT  : 5.60
+CPU Util    : 100.0%
+Throughput  : 0.192 procs/unit
 
->> Algorithm: Priority (Preemptive)
----------------------------------------------------------------------------
-[*] Execution Order : P1 -> P2 -> P4 -> P1 -> P3 -> P5 -> P3
-[*] Idle Intervals  : None (CPU 100% engaged after arrival)
+==================== Priority (Preemptive) ====================
+Execution Order: P1 -> P2 -> P4 -> P1 -> P3 -> P5 -> P3
+Idle Intervals : None
 
-[*] Gantt Chart:
+Gantt Chart:
 +------+------+------+------+------+------+------+
 |  P1  |  P2  |  P4  |  P1  |  P3  |  P5  |  P3  |
 +------+------+------+------+------+------+------+
-0     1      4     10     14     15     19     26
+0      1      4     10     14     15     19     26
 
-+-----+--------------+------------+----------+-----------+-------------+-------------+---------------+
-| PID | Arrival (AT) | Burst (BT) | Priority | Exit (CT) | TAT (CT-AT) | WT (TAT-BT) | RT (Start-AT) |
-+-----+--------------+------------+----------+-----------+-------------+-------------+---------------+
-|  P1 |      0       |     5      |    3     |     14    |      14     |      9      |       0       |
-|  P2 |      1       |     3      |    1     |     4     |      3      |      0      |       0       |
-|  P3 |      2       |     8      |    4     |     26    |      24     |      16     |       12      |
-|  P4 |      3       |     6      |    2     |     10    |      7      |      1      |       1       |
-|  P5 |      15      |     4      |    2     |     19    |      4      |      0      |       0       |
-+-----+--------------+------------+----------+-----------+-------------+-------------+---------------+
+PID | AT | BT | Priority | CT | TAT | WT | RT
+------------------------------------------------
+ P1 |  0 |  5 |        3 | 14 |  14 |  9 |  0
+ P2 |  1 |  3 |        1 |  4 |   3 |  0 |  0
+ P3 |  2 |  8 |        4 | 26 |  24 | 16 | 12
+ P4 |  3 |  6 |        2 | 10 |   7 |  1 |  1
+ P5 | 15 |  4 |        2 | 19 |   4 |  0 |  0
 
-Average Turnaround Time (TAT) : 10.40 time units
-Average Waiting Time    (WT)  : 5.20 time units
-Average Response Time   (RT)  : 2.60 time units
-CPU Utilization               : 100.00 %
-Throughput                    : 0.1923 processes/unit time
----------------------------------------------------------------------------
+Average TAT : 10.40
+Average WT  : 5.20
+Average RT  : 2.60
+CPU Util    : 100.0%
+Throughput  : 0.192 procs/unit
 
-===========================================================================
-  ORIGINAL DATA INTEGRITY CHECK
-===========================================================================
-[+] VERIFIED: Original process data preserved intact across all algorithm comparisons.
+[OK] Confirmed: Original process data was preserved across all algorithms.
 
-===========================================================================
-  ALGORITHM COMPARISON SUMMARY
-===========================================================================
-+----------------------------------------+--------------+--------------+--------------+--------------+--------------+
-|               Algorithm                |   Avg TAT    |    Avg WT    |    Avg RT    |  CPU Util %  |  Throughput  |
-+----------------------------------------+--------------+--------------+--------------+--------------+--------------+
-| First-Come, First-Served (FCFS)        |    11.20     |     6.00     |     6.00     |    100.0%    |    0.192     |
-| Shortest Job First (SJF - Non-Preemptive) |    10.80     |     5.60     |     5.60     |    100.0%    |    0.192     |
-| Shortest Remaining Time First (SRTF - Preemptive) |    10.00     |     4.80     |     3.40     |    100.0%    |    0.192     |
-| Round Robin (RR, Quantum=2)            |    15.20     |    10.00     |     2.20     |    100.0%    |    0.192     |
-| Priority (Non-Preemptive)              |    10.80     |     5.60     |     5.60     |    100.0%    |    0.192     |
-| Priority (Preemptive)                  |    10.40     |     5.20     |     2.60     |    100.0%    |    0.192     |
-+----------------------------------------+--------------+--------------+--------------+--------------+--------------+
+==================== COMPARISON SUMMARY ====================
+Algorithm                    | Avg TAT  | Avg WT   | Avg RT   | CPU Util
+-----------------------------------------------------------------
+FCFS                         | 11.20    | 6.00     | 6.00     | 100.0%
+SJF (Non-Preemptive)         | 10.80    | 5.60     | 5.60     | 100.0%
+SRTF (Preemptive SJF)        | 10.00    | 4.80     | 3.40     | 100.0%
+Round Robin (q=2)            | 15.20    | 10.00    | 2.20     | 100.0%
+Priority (Non-Preemptive)    | 10.80    | 5.60     | 5.60     | 100.0%
+Priority (Preemptive)        | 10.40    | 5.20     | 2.60     | 100.0%

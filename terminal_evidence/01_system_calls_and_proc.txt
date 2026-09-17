@@ -1,104 +1,21 @@
-=== TERMINAL EVIDENCE: Module 1: System Calls & /proc Observation ===
-Timestamp: 2026-09-17 07:56:03
-Command  : /usr/bin/python3 -c import src.module1_sys_process.syscalls_demo as s, src.module1_sys_process.proc_observer as p, src.module1_sys_process.zombie_orphan_demo as z; s.main(); p.main(); z.main()
-Exit Code: 0 (Completed in 2.10s)
+--- 1. System Calls Demo ---
+Current PID : 562
+Parent PID  : 424
+OS/Kernel   : Linux 6.18.33.2-microsoft-standard-WSL2 (x86_64)
+Read from fd: Testing low-level POSIX write syscall.
+File size from fstat: 39 bytes
 
-############################################################
-  LINUX SYSTEM CALLS EXPERIMENT & OBSERVATION
-############################################################
+--- 2. Linux /proc Filesystem Observation ---
+  Name:	python3
+  State:	R (running)
+  PPid:	424
+  VmRSS:	   10416 kB
+  Threads:	1
+  voluntary_ctxt_switches:	63
+  nonvoluntary_ctxt_switches:	1
+  Load average: 1.41 0.52 0.19 1/232 562
 
-============================================================
-1. Process Identity & Credentials System Calls
-============================================================
-[*] getpid()  -> Current PID   : 587
-[*] getppid() -> Parent PID    : 584
-[*] getuid()  -> Real UID      : 1000
-[*] getgid()  -> Real GID      : 1000
-[*] geteuid() -> Effective UID : 1000
-[*] getegid() -> Effective GID : 1000
-[*] uname()   -> Sysname : Linux, Release: 6.18.33.2-microsoft-standard-WSL2, Machine: x86_64
-
-============================================================
-2. File Descriptor I/O System Calls (open, write, read, close)
-============================================================
-[*] open('syscall_test.tmp', flags=O_CREAT|O_RDWR|O_TRUNC, mode=0644)
-    -> Obtained file descriptor: 3
-[*] write(fd=3, len=71) -> 71 bytes written
-[*] lseek(fd=3, offset=0, whence=SEEK_SET) -> offset now 0
-[*] read(fd=3, count=1024) -> 71 bytes read:
-    Content: Operating Systems Lab: System call execution directly via kernel trap.
-[*] fstat(fd=3) -> Inode: 1970324837879930, Size: 71 bytes, Mode: 0o100777
-[*] close(fd=3) -> File descriptor closed successfully
-[*] unlink('syscall_test.tmp') -> Temporary file removed
-
-============================================================
-3. Filesystem Metadata System Call (stat)
-============================================================
-[*] stat('/etc'):
-    - Device ID (st_dev)     : 2096
-    - Inode number (st_ino)  : 16385
-    - Protection mode        : 0o40755
-    - Hard link count        : 91
-    - Owner UID / GID        : 0 / 0
-    - Total size in bytes    : 4096
-    - Last modified time     : Thu Sep 17 07:56:01 2026
-
-[+] System call observation completed successfully.
-############################################################
-  LINUX /proc VIRTUAL FILESYSTEM OBSERVER
-############################################################
-============================================================
-System-Wide /proc Health & Metrics
-============================================================
-[*] Load Averages (1m, 5m, 15m)  : 0.99, 0.67, 0.31
-[*] Running / Total Entities    : 1/206
-[*] Last Created PID            : 587
-[*] Total Physical Memory (MemTotal): 6068848 kB
-[*] Available Memory (MemAvailable) : 5422736 kB
-[*] Total Swap (SwapTotal)          : 2097152 kB
-
-
---- Observation for PID 587 [python3] ---
-  PID / PPID          : 587 / 584
-  Process State       : R (Running / Runnable)
-  Threads count       : 1
-  Priority / Nice     : 20 / 0
-  CPU Ticks (user/sys): 3 ticks / 3 ticks
-  Virtual Memory (Vm) : 17544 kB
-  Resident Memory(RSS): 11428 kB
-  Voluntary Switches  : 599
-  Involuntary Switches: 0
-
---- Observation for PID 584 [python3] ---
-  PID / PPID          : 584 / 579
-  Process State       : S (Interruptible Sleep (Waiting for event/signal))
-  Threads count       : 1
-  Priority / Nice     : 20 / 0
-  CPU Ticks (user/sys): 4 ticks / 3 ticks
-  Virtual Memory (Vm) : 17892 kB
-  Resident Memory(RSS): 12340 kB
-  Voluntary Switches  : 95
-  Involuntary Switches: 1
-############################################################
-  ZOMBIE PROCESS & ORPHAN ADOPTION DEMO
-############################################################
-
-============================================================
-1. Zombie Process Lifecycle & Kernel Reaping
-============================================================
-[*] Parent process PID: 587
-[*] Parent spawned child with PID: 588
-[*] Parent checking child 588 state before wait():
-    Child state in /proc: 'Z (zombie)'
-    -> CONFIRMED: Child is in ZOMBIE (defunct) state.
-    -> Child's memory/resources are freed, but PCB remains in process table.
-[*] Parent calling os.waitpid(588, 0) to collect status...
-    -> Successfully reaped child 588 with exit code 42
-[*] Child state in /proc after waitpid(): 'Non-existent (Reaped / Dead)'
-    -> CONFIRMED: Process control block removed from process table.
-
-============================================================
-2. Orphan Process Adoption Demonstration
-============================================================
-[*] Orphan adoption test completed.
+--- 3. Zombie and Orphan Processes Demo ---
+Child 563 state before wait(): State:	Z (zombie)
+Reaped child 563 with exit code: 42
 

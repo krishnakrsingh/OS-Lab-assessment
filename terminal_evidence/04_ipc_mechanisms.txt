@@ -1,93 +1,17 @@
-=== TERMINAL EVIDENCE: Module 4: Inter-Process Communication (Pipes, FIFOs, Shared Memory, Queues, Signals) ===
-Timestamp: 2026-09-17 07:56:08
-Command  : /usr/bin/python3 -c import src.module4_ipc.pipe_ipc as p, src.module4_ipc.fifo_ipc as f, src.module4_ipc.shared_memory_ipc as shm, src.module4_ipc.message_queue_ipc as q, src.module4_ipc.signal_ipc as s; p.main(); f.main(); shm.main(); q.main(); s.main()
-Exit Code: 0 (Completed in 2.57s)
+--- 1. Anonymous Pipe IPC ---
+  Child received via pipe: 'Data sent from parent process.'
 
-############################################################
-  ANONYMOUS PIPE INTER-PROCESS COMMUNICATION
-############################################################
+--- 2. Named Pipe (FIFO) IPC ---
+  Child read from FIFO: 'Message piped through /tmp/demo_ipc_fifo'
 
-============================================================
-1. Unidirectional Anonymous Pipe (Parent -> Child)
-============================================================
-[*] Parent PID 665: Closed read fd 3, writing message...
-[*] Parent closed write end. Awaiting child exit status...
-[+] Unidirectional pipe demo concluded successfully.
+--- 3. Shared Memory IPC with Lock ---
+  Parent read from Shared Memory: 'Shared Memory Packet'
 
-============================================================
-2. Bidirectional Anonymous Pipe Pair (Request-Response)
-============================================================
-[*] Parent sending computation query for: 16
-[*] Parent received response from child: 'RESULT: 256'
-[+] Bidirectional pipe RPC cycle complete.
+--- 4. Message Queue IPC ---
+  Dequeued: Task 1
+  Dequeued: Task 2
+  Dequeued: Shutdown
 
-############################################################
-  NAMED PIPE (FIFO) PRODUCER-CONSUMER IPC
-############################################################
+--- 5. Signal Asynchronous Notification ---
+  Child received signal 10 (SIGUSR1)
 
-============================================================
-Linux Named Pipe (FIFO) Demonstration
-============================================================
-[*] Created FIFO special node at: /tmp/os_assessment_fifo.pipe
-[*] Verified node inode=27, is_fifo=True
-[*] Parent Producer PID 665: Opening FIFO for writing...
-[*] Parent Producer connected. Writing payload batch...
-[*] Parent Producer closed write descriptor.
-[*] Unlinked FIFO file node /tmp/os_assessment_fifo.pipe
-
-[+] FIFO Inter-process communication successfully executed.
-############################################################
-  SHARED MEMORY & MUTEX SYNCHRONIZATION IPC
-############################################################
-
-============================================================
-Synchronized POSIX Shared Memory IPC
-============================================================
-[*] Allocated shared memory buffer of 128 bytes (Name: os_assessment_shm_buffer)
-[*] Launching concurrent writer and reader processes...
-  [Writer Process] Attached to shared memory segment: os_assessment_shm_buffer
-  [Writer Process] Wrote record #1 into shared memory
-  [Writer Process] Wrote record #2 into shared memory
-  [Writer Process] Wrote record #3 into shared memory
-  [Reader Process] Attached to shared memory segment: os_assessment_shm_buffer
-  --> [Reader Process] Read record: ID=2, Val=85.0, Msg='STATUS_OK_2'
-  --> [Reader Process] Read record: ID=3, Val=127.5, Msg='STATUS_OK_3'
-  --> [Reader Process] Read record: ID=3, Val=127.5, Msg='STATUS_OK_3'
-[*] Shared memory segment unlinked and freed from kernel.
-
-[+] Shared memory IPC executed with zero collisions and clean memory teardown.
-############################################################
-  MESSAGE QUEUE IPC DEMONSTRATION
-############################################################
-
-============================================================
-Message Queue Bounded Producer-Consumer IPC
-============================================================
-  [Producer] Commencing production of 5 work packages...
-  [Producer] Enqueued JOB_001
-  [Producer] Enqueued JOB_002
-  [Producer] Enqueued JOB_003
-  [Producer] Enqueued JOB_004
-  [Producer] Enqueued JOB_005
-  [Producer] Production complete. Enqueued termination sentinel.
-  [Consumer] Listening on message queue...
-  --> [Consumer] Processed JOB_001: 'Compute matrix chunk 1'
-  --> [Consumer] Processed JOB_002: 'Compute matrix chunk 2'
-  --> [Consumer] Processed JOB_003: 'Compute matrix chunk 3'
-  --> [Consumer] Processed JOB_004: 'Compute matrix chunk 4'
-  --> [Consumer] Processed JOB_005: 'Compute matrix chunk 5'
-  [Consumer] Received termination sentinel. Exiting read loop.
-  [Consumer] Total messages consumed: 5
-
-[+] Message queue communication completed with full message integrity.
-############################################################
-  POSIX ASYNCHRONOUS SIGNALS DEMONSTRATION
-############################################################
-
-============================================================
-POSIX Signal Handling & Asynchronous IPC
-============================================================
-[*] Parent PID 665: Dispatching os.kill(676, signal.SIGUSR1)...
-[*] Child process completed with exit status: 0
-
-[+] Asynchronous signal IPC test completed successfully.
